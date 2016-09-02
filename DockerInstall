@@ -1,0 +1,18 @@
+cat > /etc/yum.repos.d/docker.repo <<-EOF
+[dockerrepo]
+name=Docker Repository
+baseurl=https://yum.dockerproject.org/repo/main/centos/6
+enabled=1
+gpgcheck=1
+gpgkey=https://yum.dockerproject.org/gpg
+EOF
+
+
+yum erase docker*
+yum install docker-engine
+
+## Dockerfile 설정 후 해당 디렉토리에서
+docker build -t dev-ve .
+
+## 도커 이미지 생성 후 실행
+docker run -d -v /data/htdocs:/htdocs -p 2210:22 -p 8080:80 dev-ve
